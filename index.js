@@ -1,6 +1,10 @@
+const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 const { pokemon } = require('./pokedex.json');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}))
 
 app.get("/", (req, res, next) =>{
     res.status(200);
@@ -12,27 +16,20 @@ app.get("/all", (req, res, next) =>{
     res.send(pokemon);
 })
 
-app.get("/pokemon/:id", (req, res, next) =>{
+app.get("/pokemon/:id([0-9]{1,3})", (req, res, next) =>{
     const id = req.params.id
     if (id >= 0 && id <=150){
-        res.status(200);
-        res.send(pokemon[req.params.id - 1]);
+        return res.status(200).send(pokemon[req.params.id - 1]);
     }
-    else {
-        res.status(404);
-        res.send('pokemon no encontrado')
-    }
+    return res.status(404).send('pokemon no encontrado');
 })
 
-app.get("/pokemon/:name", (req, res, next) =>{
+app.get("/pokemon/:name(A-Za-z)", (req, res, next) =>{
     const name = req.params.name;
 
-    for (i=0; i < pokemon.length; i++){
-        if(pokemon[i].name == name){
-            res.status(200);
-            res.send(pokemon[i]);
-        }
-    }
+    const pk = pokemon.filter((p) => {
+        return (p.name.toUpperCase() == name.toUpperCase()) && p;
+    })
     res.status(404);
     res.send('pokemon no encontrado')
 })
