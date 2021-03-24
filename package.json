@@ -1,0 +1,29 @@
+{
+  "name": "maujs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lobami/maujs.git"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express"
+  ],
+  "author": "loth mejia m",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lobami/maujs/issues"
+  },
+  "homepage": "https://github.com/lobami/maujs#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
