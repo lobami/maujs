@@ -4,7 +4,7 @@ const pokemon = express.Router();
 const db = require('../config/database')
 
 
-pokemon.post("/", (req, res, next) => {
+pokemon.post("/", async(req, res, next) => {
     const { pok_name, pok_height, pok_weight, pok_base_experience } = req.body;
     if (pok_name && pok_height && pok_weight && pok_base_experience) {
         let query = `INSERT INTO pokemon (pok_name, pok_height, pok_weight, pok_base_experience) VALUES ('${pok_name}', '${pok_height}', '${pok_weight}', '${pok_base_experience}')`;
@@ -16,7 +16,7 @@ pokemon.post("/", (req, res, next) => {
     }
 })
 
-pokemon.delete("/:id([0-9]{1,3}", (req, res, next) =>{
+pokemon.delete("/:id([0-9]{1,3})", async(req, res, next) =>{
     const id = req.params.id
     const query_delete = "DELETE FROM pokemon WHERE pok_id=" + id;
     const rows = await db.query(query_delete);
@@ -26,7 +26,7 @@ pokemon.delete("/:id([0-9]{1,3}", (req, res, next) =>{
     return res.status(404).json({ code: 404, message: "pokemon no encontrado"})
 })
 
-pokemon.put("/:id([0-9]{1,3}", (req, res, next) =>{
+pokemon.put("/:id([0-9]{1,3})", async(req, res, next) =>{
     const { pok_name, pok_height, pok_weight, pok_base_experience } = req.body;
     if (pok_name && pok_height && pok_weight && pok_base_experience) {
         let query = `UPDATE pokemon SET pok_name='${pok_name}', pok_height='${pok_height}', `;

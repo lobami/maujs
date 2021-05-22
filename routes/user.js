@@ -4,11 +4,12 @@ const db = require('../config/database');
 const jwt = require('jsonwebtoken');
 
 
-user.post("/login", (req, res, next) => {
+user.post("/login", async(req, res, next) => {
     const { user_email, user_password } = req.body
-    const query = `SELECT * FROM user where user_mail=${user_email} and password=${user_password}`
+    console.log('llego a aqui!!!!!!!!!', user_email, user_password)
+    const query = `SELECT * FROM user where user_mail='${user_email}' and user_password='${user_password}'`
     const rows = await db.query(query);
-
+    console.log('llego a aqui!!!!!!!!!')
     if (user_email && user_password) {
         if (rows.length == 1) {
             const token = jwt.sign({
@@ -19,14 +20,14 @@ user.post("/login", (req, res, next) => {
             return res.status(200).json({ code: 200, message: token})
         }
         else {
-            return res.status(401).json({ code: 200, message: "usuario y/o contraseña incorrectos"})
+            return res.status(401).json({ code: 401, message: "usuario y/o contraseña incorrectos"})
         }
     }
     return res.status(500).json({ code: 500, message: "campos imcompletos"})
 })
 
 
-user.post("/", (req, res, next) => {
+user.post("/", async(req, res, next) => {
     const { user_name, user_email, user_password } = req.body;
     if (user_name && user_email && user_password) {
         let query = `INSERT INTO user (user_name, user_email, user_password) VALUES ('${user_name}', '${user_email}', '${user_password}')`;
@@ -39,7 +40,7 @@ user.post("/", (req, res, next) => {
     return res.status(500).json({ code: 404, message: "campos imcompletos"})
 })
 
-user.delete("/:id([0-9]{1,3}", (req, res, next) =>{
+user.delete("/:id([0-9]{1,3})", async(req, res, next) =>{
     const id = req.params.id
     const query_delete = "DELETE FROM user WHERE user_id=" + id;
     const rows = await db.query(query_delete);
@@ -49,7 +50,7 @@ user.delete("/:id([0-9]{1,3}", (req, res, next) =>{
     return res.status(404).json({ code: 404, message: "usuario no encontrado"})
 })
 
-user.put("/:id([0-9]{1,3}", (req, res, next) =>{
+user.put("/:id([0-9]{1,3})", async(req, res, next) =>{
     const { user_name, user_email, user_password } = req.body;
     if (user_name && user_email && user_password) {
         let query = `UPDATE user SET user_name='${user_name}', user_mail='${user_email}', user_password='${user_password}'`;
@@ -77,7 +78,7 @@ user.get("/:id([0-9]{1,3})", async(req, res, next) =>{
     
 })
 
-pokemon.get('/:name([A-Za-z]+)', async(req, res, next) =>{
+user.get('/:name([A-Za-z]+)', async(req, res, next) =>{
     const name = req.params.name;
 
     const pkmn = await db.query('select * from pokemon where pok_name = "' + name + '"')
