@@ -30,14 +30,15 @@ user.post("/login", async(req, res, next) => {
 user.post("/", async(req, res, next) => {
     const { user_name, user_email, user_password } = req.body;
     if (user_name && user_email && user_password) {
-        let query = `INSERT INTO user (user_name, user_email, user_password) VALUES ('${user_name}', '${user_email}', '${user_password}')`;
+        let query = `INSERT INTO user (user_name, user_mail, user_password) VALUES ('${user_name}', '${user_email}', '${user_password}')`;
         const rows = await db.query(query)
         if (rows.affectedRows == 1){
             return res.status(200).json({ code: 200, message: "usuario creado correctamente"})
         }
         return res.status(404).json({ code: 404, message: "usuario no creado"})
     }
-    return res.status(500).json({ code: 404, message: "campos imcompletos"})
+    console.log('aqui fue crack')
+    return res.status(500).json({ code: 500, message: "campos imcompletos"})
 })
 
 user.delete("/:id([0-9]{1,3})", async(req, res, next) =>{
