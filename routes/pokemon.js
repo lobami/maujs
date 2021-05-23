@@ -41,7 +41,7 @@ pokemon.put("/:id([0-9]{1,3})", async(req, res, next) =>{
 
 pokemon.get("/", async(req, res, next) =>{
     const pkmn = await db.query('select * from pokemon')
-    return res.status(201).json({code: 1, message: pkmn})
+    return res.status(200).json({code: 1, message: pkmn})
 })
 
 pokemon.get("/:id([0-9]{1,3})", async(req, res, next) =>{
