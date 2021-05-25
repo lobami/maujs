@@ -2,7 +2,6 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const express = require('express')
 const app = express()
-const pokemon = require('./routes/pokemon')
 const user = require ('./routes/user')
 const auth = require ('./middleware/auth')
 const notFound = require ('./middleware/notFound')
@@ -19,7 +18,6 @@ app.get("/", wellcome)
 
 app.get(auth)
 
-app.use("/pokemon", pokemon);
 app.use("/user", user)
 
 app.use(notFound)

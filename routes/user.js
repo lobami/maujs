@@ -5,11 +5,12 @@ const jwt = require('jsonwebtoken');
 
 
 user.post("/login", async(req, res, next) => {
+    let is_admin = false
     const { user_email, user_password } = req.body
     console.log('llego a aqui!!!!!!!!!', user_email, user_password)
     const query = `SELECT * FROM user where user_mail='${user_email}' and user_password='${user_password}'`
     const rows = await db.query(query);
-    console.log('llego a aqui!!!!!!!!!')
+    console.log('llego a aqui!!!!!!!!!', rows[0]['is_admin'])
     if (user_email && user_password) {
         if (rows.length == 1) {
             const token = jwt.sign({
@@ -17,7 +18,10 @@ user.post("/login", async(req, res, next) => {
                 user_mail: rows[0].user_email,
 
             },"debugkey")
-            return res.status(200).json({ code: 200, message: token})
+            if (rows[0]['is_admin'] === 1){
+                is_admin = true
+            }
+            return res.status(200).json({ code: 200, message: token, is_admin: is_admin})
         }
         else {
             return res.status(401).json({ code: 401, message: "usuario y/o contraseña incorrectos"})
